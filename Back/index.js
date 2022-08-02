@@ -32,9 +32,9 @@ app.use("/api/auth", userRoutes);
 app.use("/api/posts", postsRoutes);
 app.use('/images', express.static(path.join(__dirname, './images')));
 
-app.listen(3000, () => {
-    mongoose.connect("mongodb://localhost/groupomania", function(err) {
+app.listen(process.env.PORT, () => {
+    mongoose.connect(`mongodb+srv://${process.env.LOGIN}:${process.env.PW}@${process.env.DBURL}/?retryWrites=true&w=majority`, function(err) {
         if (err) { throw err; }
-        console.log(`Serveur lancé sur le ${3000} et connecté à la base de données`);
+        console.log(`Serveur lancé sur le ${process.env.PORT} et connecté à la base de données`);
     });
 });

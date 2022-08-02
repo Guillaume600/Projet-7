@@ -29,6 +29,53 @@ exports.createPost = (req, res, next) => {
         .catch(error => res.status(400).json({ error }));
 };
 
+exports.deletePost = (req, res, next) => {
+    if (post.imageUrl) {
+        const postImageUrl = post.imageUrl.split("/").pop();
+        fs.rm(`./images/${postImageUrl}`, (error) => {
+            if (error) {
+                res.status(400).json({ error });
+            } else {
+                Posts.deleteOne({ _id: req.params.id })
+                    .then(() => res.status(200).json({ message: "Post supprimé !" }))
+                    .catch((error) => res.status(400).json({ error }));
+            }
+        });
+    } else {
+        Posts.deleteOne({ _id: req.params.id })
+            .then(() => res.status(200).json({ message: "Post supprimé !" }))
+            .catch((error) => res.status(400).json({ error }));
+    }
+};
+
+exports.updatePost = (req, res, next) => {
+    const postObject = req.file ? {
+        ...JSON.parse(req.body.post),
+        imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+    } : {...req.body };
+
+    delete postObject._userId;
+    Posts.findOne({ _id: req.params.id })
+        .then((post) => {
+            //si fichier modifié
+            if (req.file) {
+                const postImageUrl = post.imageUrl.split("/").pop();
+                fs.rm(`./images/${postImageUrl}`, (error) => {
+                    if (error) {
+                        console.log(error);
+                    }
+                });
+            }
+            Posts.updateOne({ _id: req.params.id }, {...postObject, _id: req.params.id })
+                .then(() => res.status(200).json({ message: 'Post modifié !' }))
+                .catch(error => res.status(401).json({ error }));
+        })
+        .catch((error) => {
+            res.status(400).json({ error });
+        });
+};
+
+
 exports.likePost = (req, res, next) => {
     Posts.findById(req.params.id)
         .then((post) => {
