@@ -6,7 +6,7 @@ const mongoSanitize = require('express-mongo-sanitize');
 const express = require('express');
 const cors = require('cors');
 const userRoutes = require("./routes/user");
-const postsRoutes = require("./roimage.pngutes/posts");
+const postsRoutes = require("./routes/posts");
 const path = require('path');
 const dotEnv = require("dotenv");
 dotEnv.config();
@@ -24,9 +24,9 @@ const limiter = rateLimit({
  * permet de monter la fonction middleware spécifiée
  */
 app.use(express.json());
-//app.use(cors());
+app.use(cors());
 app.use(mongoSanitize());
-//app.use(limiter);
+app.use(limiter);
 // Routes
 app.use("/api/auth", userRoutes);
 app.use("/api/posts", postsRoutes);

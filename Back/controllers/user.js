@@ -10,7 +10,8 @@ exports.signup = (req, res, next) => {
     if (!req.body.password || !req.body.email) {
         console.log(req.body);
         console.log(`[Signup] Inscription échouée : utilisateur ou mdp requis`);
-        res.status(400).json({ error: "Utilisateur ou mot de passe requis" });
+        res.status(400).json({ message: "Utilisateur ou mot de passe requis" });
+        return;
     }
     bcrypt.hash(req.body.password, 10)
         .then(hash => {
@@ -25,12 +26,12 @@ exports.signup = (req, res, next) => {
                 })
                 .catch(error => {
                     console.log(`[Signup] Erreur lors de l'ajout d'utilisateur : ${error}`);
-                    res.status(400).json({ error });
+                    res.status(400).json({ message: error });
                 });
         })
         .catch(error => {
             console.log(`[Signup] Erreur lors de l'ajout d'utilisateur : ${error}`);
-            res.status(500).json({ error });
+            res.status(500).json({ message: error });
         });
 };
 
@@ -57,12 +58,12 @@ exports.login = (req, res, next) => {
                     })
                     .catch(error => {
                         console.error(error);
-                        res.status(500).json({ error });
+                        res.status(500).json({ message: error });
                     })
             }
         })
         .catch(error => {
             console.error(error);
-            res.status(500).json({ error });
+            res.status(500).json({ message: error });
         })
 };
