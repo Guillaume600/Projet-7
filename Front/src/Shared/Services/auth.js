@@ -22,7 +22,8 @@ export const authService = {
             });
     },
     logout: () => {
-        console.log("logout");
+        Cookies.remove("token");
+        window.location.href= "/login";
     },
     signup: (email, password) => {
         return fetch(`${Env.urlApi}/auth/signup`, {

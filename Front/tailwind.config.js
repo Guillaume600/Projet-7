@@ -9,14 +9,15 @@ module.exports = {
       },
       colors: {
         "Primaire": "#FD2D01",
+        "PrimaireSombre": "#ba1f00",
         "Secondaire": "#FFD7D7",
         "Tertiaire": "#4E5166",
       },
     },
+  },
 
+  plugins: [
+    require('@tailwindcss/forms'),
+  ],
 
-    plugins: [
-      require('@tailwindcss/forms'),
-    ],
-  }
 }

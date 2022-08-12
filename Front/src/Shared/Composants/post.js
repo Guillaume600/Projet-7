@@ -5,11 +5,30 @@ import React from "react";
 import { MdEdit } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
 import { MdThumbUp } from "react-icons/md";
+import { postService } from "Shared/Services/post";
 
 
 
 
 export default class Post extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state={
+            like:0
+        };
+    }
+
+    like = () => {
+        postService.like(this.props.post._id)
+        .then(() => {
+            if (this.props.post.usersLiked.includes(this.props.user._id)) {
+                return;
+            }
+            this.setState({
+                like:1
+            });
+        });
+    }
 
     render() {
         moment.locale("fr");
@@ -38,9 +57,9 @@ export default class Post extends React.Component {
                 </div>
                 <p className="pb-4">{this.props.post.description}</p>
                 <div className="flex justify-between">
-                    <button className="inline-flex items-center px-4 py-2 font-semibold leading-6 text-sm shadow rounded-md bg-Secondaire">
+                    <button onClick={this.like} className="inline-flex items-center px-4 py-2 font-semibold leading-6 text-sm shadow rounded-md bg-Secondaire">
                         <MdThumbUp size="15" className="mr-3"/>
-                        <span>{this.props.post.usersLiked.length} like(s)</span></button>
+                        <span>{this.props.post.usersLiked.length + this.state.like} like(s)</span></button>
                     {action}
                 </div>
             </div>

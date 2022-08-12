@@ -22,7 +22,6 @@ export default class Home extends React.Component {
         this.getMe();
     }
     getAll() {
-        setTimeout(() => {
             postService.getAllPosts()
                 .then((posts) => {
                     this.setState({
@@ -30,7 +29,6 @@ export default class Home extends React.Component {
                         posts
                     });
                 });
-        }, 3000);
     }
     getMe() {
         userService.getMe()

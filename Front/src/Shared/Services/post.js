@@ -19,5 +19,25 @@ export const postService = {
             }
             return response.json();
         });
+    },
+
+    like: (postId) => {
+        const token = Cookies.get("token");
+
+        return fetch(`${Env.urlApi}/posts/${postId}/like`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify({like: true})
+        })
+        .then(async (response) => {
+            if (!response.ok) {
+                const error = await response.json();
+                throw Error(error.message);
+            }
+            return response.json();
+        });
     }
 };
