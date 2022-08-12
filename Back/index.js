@@ -28,9 +28,9 @@ app.use(cors());
 app.use(mongoSanitize());
 app.use(limiter);
 // Routes
-app.use("/api/auth", userRoutes);
+app.use("/api", userRoutes);
 app.use("/api/posts", postsRoutes);
-app.use('/images', express.static(path.join(__dirname, './images')));
+app.use('/api/images', express.static(path.join(__dirname, './images')));
 
 app.listen(process.env.PORT, () => {
     mongoose.connect(`mongodb+srv://${process.env.LOGIN}:${process.env.PW}@${process.env.DBURL}/?retryWrites=true&w=majority`, function(err) {

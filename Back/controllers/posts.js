@@ -2,12 +2,32 @@ const Posts = require("../models/posts");
 
 exports.getAllPosts = (req, res, next) => {
     Posts.find()
+        .sort({
+            createdAt: "descending"
+        })
+        .populate("author")
+        .then(posts => {
+            posts.forEach(post => {
+                post.author.admin = undefined;
+                post.author.password = undefined;
+                post.author.email = post.author.email.split("@")[0].replaceAll("."," ");
+            });
+            return posts;
+        })
         .then(posts => res.status(200).json(posts))
         .catch(error => res.status(400).json({ error }));
 };
 
 exports.getPostById = (req, res, next) => {
     Posts.findById(req.params.id)
+        .populate("author")
+        .then(post => {
+            post.author.admin = undefined;
+            post.author.password = undefined;
+            post.author.email = post.author.email.split("@")[0].replaceAll("."," ");
+            return post;
+        })
+
         .then(post => res.status(200).json(post))
         .catch(error => res.status(404).json({ error }));
 };
@@ -52,7 +72,7 @@ exports.updatePost = (req, res, next) => {
     const postObject = req.file ? {
         ...JSON.parse(req.body.post),
         imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
-    } : {...req.body };
+    } : { ...req.body };
 
     delete postObject._userId;
     Posts.findOne({ _id: req.params.id })
@@ -66,7 +86,7 @@ exports.updatePost = (req, res, next) => {
                     }
                 });
             }
-            Posts.updateOne({ _id: req.params.id }, {...postObject, _id: req.params.id })
+            Posts.updateOne({ _id: req.params.id }, { ...postObject, _id: req.params.id })
                 .then(() => res.status(200).json({ message: 'Post modifié !' }))
                 .catch(error => res.status(401).json({ error }));
         })

@@ -67,3 +67,13 @@ exports.login = (req, res, next) => {
             res.status(500).json({ message: error });
         })
 };
+
+exports.me = (req, res, next) => {
+    const userId = req.auth.user;
+    User.findById(userId)
+    .then(user => {
+        user.password=undefined;
+        res.status(200).json(user);
+    })
+    .catch(error => res.status(500).json({ error }));
+};

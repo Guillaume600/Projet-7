@@ -1,4 +1,5 @@
 import { Env } from "Env";
+import Cookies from "js-cookie";
 
 export const authService = {
     login: (email, password) => {
@@ -17,9 +18,6 @@ export const authService = {
                     const error = await response.json();
                     throw Error(error.message);
                 }
-                return response;
-            })
-            .then((response) => {
                 return response.json();
             });
     },
@@ -49,6 +47,7 @@ export const authService = {
             });
     },
     isConnected: () => {
-        console.log("is connected");
+        const cookie = Cookies.get("token");
+        return cookie != null;
     }
 }
