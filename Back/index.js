@@ -33,7 +33,7 @@ app.use("/api/posts", postsRoutes);
 app.use('/api/images', express.static(path.join(__dirname, './images')));
 
 app.listen(process.env.PORT, () => {
-    mongoose.connect(`mongodb+srv://${process.env.LOGIN}:${process.env.PW}@${process.env.DBURL}/?retryWrites=true&w=majority`, function(err) {
+    mongoose.connect(`mongodb+srv://${process.env.LOGIN}:${process.env.PW}@${process.env.DBURL}/Projet7?retryWrites=true&w=majority`, function(err) {
         if (err) { throw err; }
         console.log(`Serveur lancé sur le ${process.env.PORT} et connecté à la base de données`);
     });

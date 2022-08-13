@@ -50,22 +50,26 @@ exports.createPost = (req, res, next) => {
 };
 
 exports.deletePost = (req, res, next) => {
-    if (post.imageUrl) {
-        const postImageUrl = post.imageUrl.split("/").pop();
-        fs.rm(`./images/${postImageUrl}`, (error) => {
-            if (error) {
-                res.status(400).json({ error });
+    Posts.findById(req.params.id)
+        .then(post => {
+            if (post.imageUrl) {
+                const postImageUrl = post.imageUrl.split("/").pop();
+                fs.rm(`./images/${postImageUrl}`, (error) => {
+                    if (error) {
+                        res.status(400).json({ error });
+                    } else {
+                        Posts.deleteOne({ _id: req.params.id })
+                            .then(() => res.status(200).json({ message: "Post supprimé !" }))
+                            .catch((error) => res.status(400).json({ error }));
+                    }
+                });
             } else {
                 Posts.deleteOne({ _id: req.params.id })
                     .then(() => res.status(200).json({ message: "Post supprimé !" }))
                     .catch((error) => res.status(400).json({ error }));
             }
-        });
-    } else {
-        Posts.deleteOne({ _id: req.params.id })
-            .then(() => res.status(200).json({ message: "Post supprimé !" }))
-            .catch((error) => res.status(400).json({ error }));
-    }
+        })
+        .catch(error => res.status(404).json({ error }));
 };
 
 exports.updatePost = (req, res, next) => {
@@ -108,10 +112,9 @@ exports.likePost = (req, res, next) => {
                 post.usersLiked.push(req.auth.user);
             }
             post.save()
-                .then(() => { res.status(201).json({ message: `Post ${like ? "" : "non"} liké !` }) })
+                .then(() => { res.status(201).json({ like: post.usersLiked }) })
                 .catch(error => res.status(400).json({ error }));
         })
         .catch(error => res.status(400).json({ error }));
 }
 
-//possibilité retirer like (voir P6)
