@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import Logo from "Shared/Composants/logo";
 import { authService } from "Shared/Services/auth";
 
+//ignorer
+
 export default class Signup extends React.Component {
     constructor(props) {
         super(props);
