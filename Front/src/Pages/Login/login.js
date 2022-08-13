@@ -50,11 +50,11 @@ export default class Login extends React.Component {
                 <form className="flex flex-col items-center gap-5" onSubmit={this.handleSubmit}>
                     <div className="flex flex-col">
                         <label htmlFor="email" className="block text-sm font-medium text-gray-700"> Email :</label>
-                        <input className="mt-1 relative rounded-md shadow-sm focus:ring-Primaire focus:border-Primaire block min-w-full w-64 px-2 sm:text-sm border-gray-300 rounded-md" name="email" type="email" value={this.state.email} onChange={this.handleChange} required />
+                        <input className="mt-1 relative rounded-md shadow-sm focus:ring-Primaire focus:border-Primaire block min-w-full w-64 px-2 sm:text-sm border-gray-300 rounded-md" id="email" name="email" type="email" value={this.state.email} onChange={this.handleChange} required />
                     </div>
                     <div className="flex flex-col">
                         <label htmlFor="password" className="block text-sm font-medium text-gray-700">Mot de passe :</label>
-                        <input className="focus:ring-Primaire focus:border-Primaire block min-w-full w-64 px-2 sm:text-sm border-gray-300 rounded-md" name="password" type="password" value={this.state.password} onChange={this.handleChange} required />
+                        <input className="focus:ring-Primaire focus:border-Primaire block min-w-full w-64 px-2 sm:text-sm border-gray-300 rounded-md" name="password" id="password" type="password" value={this.state.password} onChange={this.handleChange} required />
                     </div>
                     <div className="errMessage text-red-500">{this.state.error}</div>
                     <button className="inline-flex items-center px-4 py-2 font-semibold leading-6 text-sm shadow rounded-md bg-Secondaire" type="submit"  >Se connecter</button>

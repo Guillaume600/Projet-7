@@ -2,6 +2,7 @@ import { Env } from "Env";
 import moment from "moment";
 import "moment/locale/fr";
 import React from "react";
+import { Link } from "react-router-dom";
 import { MdEdit } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
 import { MdThumbUp } from "react-icons/md";
@@ -46,14 +47,15 @@ export default class Post extends React.Component {
         if (this.props.post.imageUrl) {
             img = <img className="rounded-2xl" src={Env.urlApi + this.props.post.imageUrl} alt="" />
         }
-        
-        let action;
 
+        let action;
+        let url = `/addedit/${this.props.post._id}`
         if (this.props.user?.isAdmin || this.props.post.author._id === this.props.user?._id) {
             action = (<div>
-                <button className="inline-flex items-center mr-2 px-4 py-2 font-semibold leading-6 text-sm shadow rounded-md bg-Secondaire">
+                <Link to={url} className="inline-flex items-center mr-2 px-4 py-2 font-semibold leading-6 text-sm shadow rounded-md bg-Secondaire">
                     <MdEdit className="mr-3" />
-                    Modifier</button>
+                    Modifier
+                </Link>
                 <button onClick={this.delete} className="inline-flex items-center px-4 py-3 font-semibold leading-6 text-sm shadow rounded-md text-white bg-Primaire">
                     <MdDelete size="15" />
                 </button>
@@ -67,9 +69,9 @@ export default class Post extends React.Component {
 
         if (this.props.post.usersLiked.includes(this.props.user._id)) {
             button = <button onClick={this.like} className="inline-flex items-center px-4 py-2 font-semibold leading-6 text-sm shadow rounded-md bg-green-300">
-            <MdThumbUp size="15" className="mr-3" />
-            <span>{this.state.like === 0 ? this.props.post.usersLiked.length : this.state.like} like(s)</span>
-        </button>;
+                <MdThumbUp size="15" className="mr-3" />
+                <span>{this.state.like === 0 ? this.props.post.usersLiked.length : this.state.like} like(s)</span>
+            </button>;
         }
 
         return (

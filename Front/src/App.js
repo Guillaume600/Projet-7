@@ -1,3 +1,4 @@
+import AddEdit from "Pages/Add_edit/AddEdit";
 import Home from "Pages/Home/Home";
 import Login from "Pages/Login/login";
 import Signup from "Pages/Signup/signup";
@@ -13,6 +14,8 @@ function App() {
         <Route path="/" element={<Private><Home /></Private>} />
         <Route path="login" element={<Public><Login /></Public>} />
         <Route path="signup" element={<Public><Signup /></Public>} />
+        <Route path="addedit" element={<Private><AddEdit /></Private>} />
+        <Route path="addedit/:id" element={<Private><AddEdit /></Private>} />
       </Routes>
     </BrowserRouter>
   );
