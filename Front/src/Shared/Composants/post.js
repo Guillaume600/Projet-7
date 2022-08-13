@@ -13,21 +13,30 @@ import { postService } from "Shared/Services/post";
 export default class Post extends React.Component {
     constructor(props) {
         super(props);
-        this.state={
-            like:0
+        this.state = {
+            like: 0
         };
     }
 
-    like = () => {
-        postService.like(this.props.post._id)
-        .then(() => {
-            if (this.props.post.usersLiked.includes(this.props.user._id)) {
-                return;
-            }
-            this.setState({
-                like:1
+    delete = () => {
+        postService.delete(this.props.post._id)
+            .then(() => {
+                this.props.onDelete(this.props.post._id);
             });
-        });
+    }
+
+    like = () => {
+        let like = true;
+        if (this.props.post.usersLiked.includes(this.props.user._id)) {
+            like = false;
+        }
+        postService.like(this.props.post._id, like)
+            .then((result) => {
+                this.props.post.usersLiked = result.like
+                this.setState({
+                    like: result.like.length
+                });
+            });
     }
 
     render() {
@@ -37,17 +46,32 @@ export default class Post extends React.Component {
         if (this.props.post.imageUrl) {
             img = <img className="rounded-2xl" src={Env.urlApi + this.props.post.imageUrl} alt="" />
         }
+        
         let action;
+
         if (this.props.user?.isAdmin || this.props.post.author._id === this.props.user?._id) {
             action = (<div>
                 <button className="inline-flex items-center mr-2 px-4 py-2 font-semibold leading-6 text-sm shadow rounded-md bg-Secondaire">
-                    <MdEdit className="mr-3"/>
+                    <MdEdit className="mr-3" />
                     Modifier</button>
-                <button className="inline-flex items-center px-4 py-3 font-semibold leading-6 text-sm shadow rounded-md text-white bg-Primaire">
-                    <MdDelete size="15"/>
-                    </button>
+                <button onClick={this.delete} className="inline-flex items-center px-4 py-3 font-semibold leading-6 text-sm shadow rounded-md text-white bg-Primaire">
+                    <MdDelete size="15" />
+                </button>
             </div>);
         }
+
+        let button = <button onClick={this.like} className="inline-flex items-center px-4 py-2 font-semibold leading-6 text-sm shadow rounded-md bg-Secondaire">
+            <MdThumbUp size="15" className="mr-3" />
+            <span>{this.state.like === 0 ? this.props.post.usersLiked.length : this.state.like} like(s)</span>
+        </button>;
+
+        if (this.props.post.usersLiked.includes(this.props.user._id)) {
+            button = <button onClick={this.like} className="inline-flex items-center px-4 py-2 font-semibold leading-6 text-sm shadow rounded-md bg-green-300">
+            <MdThumbUp size="15" className="mr-3" />
+            <span>{this.state.like === 0 ? this.props.post.usersLiked.length : this.state.like} like(s)</span>
+        </button>;
+        }
+
         return (
             <div className="border-solid border-2 border-Tertiaire rounded-2xl m-8 p-3 shadow-2xl shadow-Secondaire ">
                 {img}
@@ -57,9 +81,7 @@ export default class Post extends React.Component {
                 </div>
                 <p className="pb-4">{this.props.post.description}</p>
                 <div className="flex justify-between">
-                    <button onClick={this.like} className="inline-flex items-center px-4 py-2 font-semibold leading-6 text-sm shadow rounded-md bg-Secondaire">
-                        <MdThumbUp size="15" className="mr-3"/>
-                        <span>{this.props.post.usersLiked.length + this.state.like} like(s)</span></button>
+                    {button}
                     {action}
                 </div>
             </div>
