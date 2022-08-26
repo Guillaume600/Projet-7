@@ -50,7 +50,7 @@ export default class Post extends React.Component {
 
         let action;
         let url = `/addedit/${this.props.post._id}`
-        if (this.props.user?.isAdmin || this.props.post.author._id === this.props.user?._id) {
+        if (this.props.user?.admin || this.props.post.author._id === this.props.user?._id) {
             action = (<div>
                 <Link to={url} className="inline-flex items-center mr-2 px-4 py-2 font-semibold leading-6 text-sm shadow rounded-md bg-Secondaire">
                     <MdEdit className="mr-3" />
@@ -82,6 +82,7 @@ export default class Post extends React.Component {
                     <p>{date}</p>
                 </div>
                 <p className="pb-4">{this.props.post.description}</p>
+                <span>{this.props.user.admin}</span>
                 <div className="flex justify-between">
                     {button}
                     {action}

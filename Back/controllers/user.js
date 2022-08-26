@@ -13,6 +13,14 @@ exports.signup = (req, res, next) => {
         res.status(400).json({ message: "Utilisateur ou mot de passe requis" });
         return;
     }
+    const regexMail = /([a-zA-Z0-9-_+]+@[a-zA-Z0-9.]+\.[a-z]+)/;
+    if (!req.body.email.match(regexMail)){
+        console.log(req.body);
+        console.log(`[Signup] Inscription échouée : format de mail incorrect`);
+        res.status(400).json({ message: "Inscription échouée : format de mail incorrect" });
+        return;
+    }
+
     bcrypt.hash(req.body.password, 10)
         .then(hash => {
             const user = new User({

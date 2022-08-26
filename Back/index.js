@@ -11,6 +11,7 @@ const path = require('path');
 const dotEnv = require("dotenv");
 dotEnv.config();
 const rateLimit = require('express-rate-limit');
+const helmet = require('helmet');
 
 const app = express();
 
@@ -24,7 +25,14 @@ const limiter = rateLimit({
  * permet de monter la fonction middleware spécifiée
  */
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+    methods:"GET, POST, PUT, DELETE, HEAD, OPTIONS"
+}));
+app.use(helmet({
+    crossOriginResourcePolicy:false,
+    expectCt: false,
+    hsts: false,
+}));
 app.use(mongoSanitize());
 app.use(limiter);
 // Routes

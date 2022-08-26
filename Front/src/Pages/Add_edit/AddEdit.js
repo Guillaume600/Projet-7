@@ -3,6 +3,7 @@ import Navigation from "Shared/Composants/navigation";
 import { userService } from "Shared/Services/user";
 import { MdCheck } from "react-icons/md";
 import { postService } from "Shared/Services/post";
+import { Env } from "Env";
 
 
 
@@ -13,7 +14,8 @@ export default class AddEdit extends React.Component {
         this.state = {
             user: null,
             image: null,
-            description: ""
+            description: "",
+            currentImage: null
         };
 
     }
@@ -34,8 +36,10 @@ export default class AddEdit extends React.Component {
         if (this.props.id) {
             postService.get(this.props.id)
                 .then((post) => {
+                    console.log(post);
                     this.setState({
-                        description: post.description
+                        description: post.description,
+                        currentImage: post.imageUrl
                     });
                 });
         }
@@ -95,19 +99,30 @@ export default class AddEdit extends React.Component {
 
 
     render() {
-        let title = <p className="text-center mb-3 text-2xl font-bold">Ajouter un post</p>
+        let title = "Ajouter un post";
+        let imageLabel = "Ajouter une image (facultatif)";
+        let image;
         if (this.props.id) {
-            title = <p className="text-center mb-3 text-2xl font-bold">Modifier un post</p>
+            title = "Modifier un post";
+            imageLabel = "Modifier l'image (facultatif)";
+        }
+        if (this.state.currentImage) {
+            image = (<div>
+                <p className="block text-sm font-medium text-gray-700">Image actuelle</p>
+                <img className="rounded-2xl max-h-28" src={Env.urlApi + this.state.currentImage} alt="" />
+            </div>);
         }
         return (
             <div className="h-full">
                 <Navigation email={this.state.user?.email} />
                 <div >
-                    {title}
+                <p className="text-center mb-3 text-2xl font-bold">{title}</p>
+                    
                     <form className="flex flex-col items-center mx-6" onSubmit={this.handleSubmit}>
                         <div className="flex flex-col gap-5 lg:w-1/3 md:w-2/3 w-full">
+                        {image}
                             <div className="flex flex-col">
-                                <label htmlFor="image" className="block text-sm font-medium text-gray-700">Ajouter une image (facultatif)</label>
+                                <label htmlFor="image" className="block text-sm font-medium text-gray-700">{imageLabel}</label>
                                 <input className="mt-1 relative rounded-md shadow-sm focus:ring-Primaire focus:border-Primaire block min-w-full w-64 px-2 sm:text-sm border-gray-300 rounded-md" id="image" name="image" type="file" accept="image/png, image/jpeg" onChange={this.handleChange} required />
                             </div>
                             <div className="flex flex-col">
