@@ -8,8 +8,8 @@ const authorOnly = require("../middleware/author-only");
 router.get("/", auth, posts.getAllPosts);
 router.get("/:id", auth, posts.getPostById);
 router.post("/", auth, multer, posts.createPost);
-//router.put("/:id", auth, authorOnly, multer, posts.updatePost);
-//router.delete("/:id", auth, ownerOnly, posts.deletePost);
+router.put("/:id", auth, authorOnly, multer, posts.updatePost);
+router.delete("/:id", auth, authorOnly, posts.deletePost);
 router.post("/:id/like", auth, posts.likePost);
 
 module.exports = router;

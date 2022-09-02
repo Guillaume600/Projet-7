@@ -8,7 +8,8 @@ module.exports = (req, res, next) => {
     } else {
         Posts.findOne({ _id: req.params.id })
             .then(post => {
-                if (post.author.id === req.auth.user) {
+                console.log(post.author._id, req.auth.user);
+                if (post.author._id.toString() === req.auth.user) {
                     next();
                 } else {
                     res.status(401).json({ error: "Vous n'êtes pas autorisé à effectuer cette action" });

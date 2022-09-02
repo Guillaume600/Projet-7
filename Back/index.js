@@ -6,11 +6,12 @@ const mongoSanitize = require('express-mongo-sanitize');
 const express = require('express');
 const cors = require('cors');
 const userRoutes = require("./routes/user");
-const postsRoutes = require("./roimage.pngutes/posts");
+const postsRoutes = require("./routes/posts");
 const path = require('path');
 const dotEnv = require("dotenv");
 dotEnv.config();
 const rateLimit = require('express-rate-limit');
+const helmet = require('helmet');
 
 const app = express();
 
@@ -24,17 +25,26 @@ const limiter = rateLimit({
  * permet de monter la fonction middleware spécifiée
  */
 app.use(express.json());
-//app.use(cors());
+app.use(cors({
+    methods:"GET, POST, PUT, DELETE, HEAD, OPTIONS"
+}));
+app.use(helmet({
+    crossOriginResourcePolicy:false,
+    expectCt: false,
+    hsts: false,
+}));
 app.use(mongoSanitize());
-//app.use(limiter);
+app.use(limiter);
 // Routes
-app.use("/api/auth", userRoutes);
+app.use("/api", userRoutes);
 app.use("/api/posts", postsRoutes);
-app.use('/images', express.static(path.join(__dirname, './images')));
+app.use('/api/images', express.static(path.join(__dirname, './images')));
 
 app.listen(process.env.PORT, () => {
-    mongoose.connect(`mongodb+srv://${process.env.LOGIN}:${process.env.PW}@${process.env.DBURL}/?retryWrites=true&w=majority`, function(err) {
+    mongoose.connect(process.env.DB_URL, function(err) {
         if (err) { throw err; }
         console.log(`Serveur lancé sur le ${process.env.PORT} et connecté à la base de données`);
     });
 });
+
+//add helmet & mongo mask
