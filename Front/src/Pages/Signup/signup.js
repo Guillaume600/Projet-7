@@ -29,7 +29,7 @@ export default class Signup extends React.Component {
         event.preventDefault();
         authService.signup(this.state.email, this.state.password)
             .then(signup => {
-                window.location.href = "/login";
+                window.location.href = "/login?success=true";
             })
             .catch((error) => {
                 this.handleError(error);

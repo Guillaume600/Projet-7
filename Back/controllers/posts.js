@@ -82,14 +82,15 @@ exports.updatePost = (req, res, next) => {
     const postObject = req.file ? {
         ...JSON.parse(req.body.post),
         imageUrl: `/images/${req.file.filename}`
-    } : { ...req.body };
+    } : { ...JSON.parse(req.body.post) };
 
     delete postObject._userId;
     Posts.findOne({ _id: req.params.id })
         .then((post) => {
             //si fichier modifié
             if (req.file) {
-                const postImageUrl = post.imageUrl.split("/").pop();
+                if (post.imageUrl) {
+                    const postImageUrl = post.imageUrl.split("/").pop();
                 try {
                     fs.rm(`./images/${postImageUrl}`, (error) => {
                         if (error) {
@@ -98,7 +99,8 @@ exports.updatePost = (req, res, next) => {
                     });
                 } catch (error) {
                     res.status(500).json({ error });
-                }
+                } 
+            }
             }
     
             Posts.updateOne({ _id: req.params.id }, { ...postObject, _id: req.params.id })

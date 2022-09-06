@@ -47,6 +47,12 @@ export default class AddEdit extends React.Component {
 
     handleSubmit = (event) => {
         event.preventDefault();
+        if (!this.state.image && !this.state.description) {
+            this.handleError({
+                message : "Image ou texte requis"
+            });
+            return;
+        }
         if (this.props.id) {
             postService.edit(
                 this.props.id,
@@ -123,11 +129,11 @@ export default class AddEdit extends React.Component {
                         {image}
                             <div className="flex flex-col">
                                 <label htmlFor="image" className="block text-sm font-medium text-gray-700">{imageLabel}</label>
-                                <input className="mt-1 relative rounded-md shadow-sm focus:ring-Primaire focus:border-Primaire block min-w-full w-64 px-2 sm:text-sm border-gray-300 rounded-md" id="image" name="image" type="file" accept="image/png, image/jpeg" onChange={this.handleChange} required />
+                                <input className="mt-1 relative rounded-md shadow-sm focus:ring-Primaire focus:border-Primaire block min-w-full w-64 px-2 sm:text-sm border-gray-300 rounded-md" id="image" name="image" type="file" accept="image/png, image/jpeg" onChange={this.handleChange}  />
                             </div>
                             <div className="flex flex-col">
                                 <label htmlFor="description" className="block text-sm font-medium text-gray-700">Description</label>
-                                <textarea className="focus:ring-Primaire focus:border-Primaire block min-w-full w-64 px-2 sm:text-sm border-gray-300 rounded-md" id="description" name="description" value={this.state.description} onChange={this.handleChange} required />
+                                <textarea className="focus:ring-Primaire focus:border-Primaire block min-w-full w-64 px-2 sm:text-sm border-gray-300 rounded-md" id="description" name="description" value={this.state.description} onChange={this.handleChange}  />
                             </div>
                             <div className="errMessage text-red-500">{this.state.error}</div>
                             <button className="inline-flex items-center self-center px-4 py-2 font-semibold leading-6 text-sm shadow rounded-md bg-Secondaire" type="submit"  >

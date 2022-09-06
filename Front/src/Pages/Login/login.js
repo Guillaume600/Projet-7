@@ -7,10 +7,13 @@ import { authService } from "Shared/Services/auth";
 export default class Login extends React.Component {
     constructor(props) {
         super(props);
+        const urlSearchParams = new URLSearchParams(window.location.search);
+        const params = Object.fromEntries(urlSearchParams.entries());
         this.state = {
             email: "",
             password: "",
-            error: ""
+            error: "",
+            success: params.success ? "Compte créé avec succès" : ""
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -43,6 +46,8 @@ export default class Login extends React.Component {
         console.log(error);
     }
 
+
+
     render() {
         return (
             <div className="flex flex-col items-center justify-center h-full gap-5 ">
@@ -56,6 +61,7 @@ export default class Login extends React.Component {
                         <label htmlFor="password" className="block text-sm font-medium text-gray-700">Mot de passe :</label>
                         <input className="focus:ring-Primaire focus:border-Primaire block min-w-full w-64 px-2 sm:text-sm border-gray-300 rounded-md" name="password" id="password" type="password" value={this.state.password} onChange={this.handleChange} required />
                     </div>
+                    <div className="errMessage text-green-500">{this.state.success}</div>
                     <div className="errMessage text-red-500">{this.state.error}</div>
                     <button className="inline-flex items-center px-4 py-2 font-semibold leading-6 text-sm shadow rounded-md bg-Secondaire" type="submit"  >Se connecter</button>
                 </form>
