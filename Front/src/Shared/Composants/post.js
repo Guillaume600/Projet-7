@@ -56,7 +56,7 @@ export default class Post extends React.Component {
                     <MdEdit className="mr-3" />
                     Modifier
                 </Link>
-                <button onClick={this.delete} className="inline-flex items-center px-4 py-3 font-semibold leading-6 text-sm shadow rounded-md text-white bg-Primaire">
+                <button onClick={this.delete} title="buttonDelete" aria-label="boutonDelete" className="inline-flex items-center px-4 py-3 font-semibold leading-6 text-sm shadow rounded-md text-white bg-Primaire">
                     <MdDelete size="15" />
                 </button>
             </div>);
@@ -68,7 +68,7 @@ export default class Post extends React.Component {
         </button>;
 
         if (this.props.post.usersLiked.includes(this.props.user._id)) {
-            button = <button onClick={this.like} className="inline-flex items-center px-4 py-2 font-semibold leading-6 text-sm shadow rounded-md bg-green-300">
+            button = <button onClick={this.like} title="buttonDelete" aria-label="boutonDelete" className="inline-flex items-center px-4 py-2 font-semibold leading-6 text-sm shadow rounded-md bg-green-300">
                 <MdThumbUp size="15" className="mr-3" />
                 <span>{this.state.like === 0 ? this.props.post.usersLiked.length : this.state.like} like(s)</span>
             </button>;

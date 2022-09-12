@@ -16,7 +16,7 @@ export default class Navigation extends React.Component {
                 <Link to = "/"><Logo type={LogoType.Color} /></Link>
                 <div>
                     <span className="mr-3 hidden md:inline">{this.props.email}</span>
-                    <button onClick={this.logout} className="inline-flex items-center self-end px-4 py-2  font-semibold leading-6 text-sm shadow rounded-md bg-Secondaire">
+                    <button onClick={this.logout} aria-label="logOut" className="inline-flex items-center self-end px-4 py-2  font-semibold leading-6 text-sm shadow rounded-md bg-Secondaire">
                         <MdLogout />
                     </button>
                 </div>

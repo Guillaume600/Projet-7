@@ -1,0 +1,23 @@
+/!\ ATTENTION, voici les étapes à suivre une fois le repo téléchargé :
+
+- A la racine du dossier back :
+
+1) npm install
+
+2) créer dossier images
+
+3) créer fichier .env et copier coller ces éléments :
+
+JWT_KEY=515645641FE5Z46E5F456ZEF56Z1FE
+PORT=4000
+DB_URL=mongodb+srv://guillaumes:projet7@cluster0.hvjeb3q.mongodb.net/Projet7?retryWrites=true&w=majority
+
+4)npm start
+
+
+
+- A la racine du dossier front :
+
+1) npm install
+
+2) npm start
